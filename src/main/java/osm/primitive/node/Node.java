@@ -1,4 +1,7 @@
-package osm;
+package osm.primitive.node;
+
+import osm.primitive.Primitive;
+import osm.primitive.PrimitiveTypeEnum;
 
 /**
  * @author Ian Dees

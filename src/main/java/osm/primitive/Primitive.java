@@ -1,8 +1,9 @@
-package osm;
+package osm.primitive;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 
 /**
  * @author Ian Dees

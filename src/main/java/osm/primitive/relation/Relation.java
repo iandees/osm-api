@@ -1,8 +1,11 @@
-package osm;
+package osm.primitive.relation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import osm.primitive.Primitive;
+import osm.primitive.PrimitiveTypeEnum;
 
 /**
  * @author Ian Dees

@@ -1,10 +1,16 @@
 package osm;
 
-import util.IDGenerator;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import osm.primitive.Primitive;
+import osm.primitive.PrimitiveTypeEnum;
+import osm.primitive.node.Node;
+import osm.primitive.relation.Member;
+import osm.primitive.relation.Relation;
+import osm.primitive.way.Way;
+import util.IDGenerator;
 
 /**
  * @author Ian Dees

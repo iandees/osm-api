@@ -1,4 +1,6 @@
-package osm;
+package osm.primitive.relation;
+
+import osm.primitive.Primitive;
 
 /**
  * @author Ian Dees
