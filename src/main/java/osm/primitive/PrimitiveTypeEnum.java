@@ -1,5 +1,5 @@
 package osm.primitive;
 
 public enum PrimitiveTypeEnum {
-    way, node, relation;
+    way, node, relation, changeset;
 }

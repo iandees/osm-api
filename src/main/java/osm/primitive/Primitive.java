@@ -33,6 +33,20 @@ public abstract class Primitive {
     public void addTag(Tag tag) {
         tagsList.add(tag);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Primitive) {
+            return ((Primitive) obj).id == id;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 
     /**
      * @return

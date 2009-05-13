@@ -18,7 +18,9 @@ public class Way extends Primitive {
     private List<Node> nodeList = new ArrayList<Node>(1000);
     
     public void addNode(Node node) {
-        node.setID(IDGenerator.nextNodeID());
+        if (node.getID() == 0) {
+            node.setID(IDGenerator.nextNodeID());
+        }
         
         nodeList.add(node);
     }

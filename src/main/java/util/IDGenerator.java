@@ -42,15 +42,15 @@ public class IDGenerator {
         }
     };
     
-    public static int nextNodeID() {
+    public static synchronized int nextNodeID() {
         return nodeSqn.next();
     }
     
-    public static int nextWayID() {
+    public static synchronized int nextWayID() {
         return waySqn.next();
     }
 
-    public static Integer nextRelationID() {
+    public static synchronized Integer nextRelationID() {
         return relationSqn.next();
     }
 
