@@ -16,20 +16,20 @@ import util.IDGenerator;
  */
 public class OSMFile {
 
-    private Node[] nodes = new Node[30000];
+    private Node[] nodes = new Node[50000];
     private Way[] ways = new Way[10000];
     private Relation[] relations = new Relation[5000];
-    private int idOffset;
+    private int nodeIdOffset;
+    private int wayIdOffset;
+    private int relationIdOffset;
     private int relationCount;
     private int wayCount;
     private int nodeCount;
     
-    public OSMFile(int offset) {
-        idOffset = offset;
-    }
-    
     public OSMFile() {
-        this(0);
+        nodeIdOffset = IDGenerator.currentNodeID();
+        wayIdOffset = IDGenerator.currentWayID();
+        relationIdOffset = IDGenerator.currentRelationID();
     }
 
     public void addNode(Node n) {
@@ -38,17 +38,17 @@ public class OSMFile {
         }
 
         nodeCount++;
-        addPrimitive(nodes, n);
+        addPrimitive(nodes, n, nodeIdOffset);
     }
 
-    private <M extends Primitive> void addPrimitive(M[] list, M n) {
-        int index = (Math.abs(n.getID()) - 1) - idOffset;
+    private <M extends Primitive> void addPrimitive(M[] list, M n, int offset) {
+        int index = (Math.abs(n.getID())) + offset;
         try {
-            if (list[index] != null) {
+            if (list[index] == null) {
                 list[index] = n;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
@@ -64,7 +64,7 @@ public class OSMFile {
         }
 
         wayCount++;
-        addPrimitive(ways, w);
+        addPrimitive(ways, w, wayIdOffset);
     }
 
     public void addRelation(Relation r) {
@@ -89,73 +89,44 @@ public class OSMFile {
         }
 
         relationCount++;
-        addPrimitive(relations, r);
+        addPrimitive(relations, r, relationIdOffset);
+    }
+    
+    class PrimitiveIterator<P extends Primitive> implements Iterator<P> {
+        private int i = 0;
+        private P[] prims;
+
+        public PrimitiveIterator(P[] primitives) {
+            prims = primitives;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return (i < prims.length) && (prims[i] != null);
+        }
+
+        @Override
+        public P next() {
+            return prims[i++];
+        }
+
+        @Override
+        public void remove() {
+            return;
+        }
+        
     }
 
     public Iterator<Node> getNodeIterator() {
-        return new Iterator<Node>() {
-            int i = 0;
-
-            @Override
-            public boolean hasNext() {
-                return (i < nodes.length) && (nodes[i + 1] != null);
-            }
-
-            @Override
-            public Node next() {
-                return nodes[++i];
-            }
-
-            @Override
-            public void remove() {
-                return;
-            }
-
-        };
+        return new PrimitiveIterator<Node>(nodes);
     }
 
     public Iterator<Way> getWayIterator() {
-        return new Iterator<Way>() {
-            int i = 0;
-
-            @Override
-            public boolean hasNext() {
-                return (i < ways.length) && (ways[i + 1] != null);
-            }
-
-            @Override
-            public Way next() {
-                return ways[++i];
-            }
-
-            @Override
-            public void remove() {
-                return;
-            }
-
-        };
+        return new PrimitiveIterator<Way>(ways);
     }
 
     public Iterator<Relation> getRelationIterator() {
-        return new Iterator<Relation>() {
-            int i = 0;
-
-            @Override
-            public boolean hasNext() {
-                return (i < relations.length) && (relations[i + 1] != null);
-            }
-
-            @Override
-            public Relation next() {
-                return relations[++i];
-            }
-
-            @Override
-            public void remove() {
-                return;
-            }
-
-        };
+        return new PrimitiveIterator<Relation>(relations);
     }
 
     public int getNodeCount() {

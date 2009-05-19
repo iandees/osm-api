@@ -7,40 +7,25 @@ import java.util.Iterator;
  *
  */
 public class IDGenerator {
+    
+    static class PeekableSqn implements Iterator<Integer> {
+        int c = -1;
+        public boolean hasNext() {
+            return true;
+        }
+        public Integer next() {
+            return c--;
+        }
+        public void remove() {
+        }
+        public Integer peek() {
+            return c;
+        }
+    }
 
-    private static final Iterator<Integer> waySqn = new Iterator<Integer>() {
-        int c = -1;
-        public boolean hasNext() {
-            return true;
-        }
-        public Integer next() {
-            return c--;
-        }
-        public void remove() {
-        }
-    };
-    private static final Iterator<Integer> nodeSqn = new Iterator<Integer>() {
-        int c = -1;
-        public boolean hasNext() {
-            return true;
-        }
-        public Integer next() {
-            return c--;
-        }
-        public void remove() {
-        }
-    };
-    private static final Iterator<Integer> relationSqn = new Iterator<Integer>() {
-        int c = -1;
-        public boolean hasNext() {
-            return true;
-        }
-        public Integer next() {
-            return c--;
-        }
-        public void remove() {
-        }
-    };
+    private static final PeekableSqn nodeSqn = new PeekableSqn();
+    private static final PeekableSqn waySqn = new PeekableSqn();
+    private static final PeekableSqn relationSqn = new PeekableSqn();
     
     public static synchronized int nextNodeID() {
         return nodeSqn.next();
@@ -52,6 +37,18 @@ public class IDGenerator {
 
     public static synchronized Integer nextRelationID() {
         return relationSqn.next();
+    }
+
+    public static int currentNodeID() {
+        return nodeSqn.peek();
+    }
+
+    public static int currentWayID() {
+        return waySqn.peek();
+    }
+
+    public static int currentRelationID() {
+        return relationSqn.peek();
     }
 
 }
