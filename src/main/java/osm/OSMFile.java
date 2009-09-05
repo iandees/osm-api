@@ -1,7 +1,5 @@
 package osm;
 
-import java.util.Iterator;
-
 import osm.primitive.Primitive;
 import osm.primitive.PrimitiveTypeEnum;
 import osm.primitive.node.Node;
@@ -10,46 +8,34 @@ import osm.primitive.relation.Relation;
 import osm.primitive.way.Way;
 import util.IDGenerator;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Ian Dees
  * 
  */
 public class OSMFile {
 
-    private Node[] nodes = new Node[50000];
-    private Way[] ways = new Way[10000];
-    private Relation[] relations = new Relation[5000];
-    private int nodeIdOffset;
-    private int wayIdOffset;
-    private int relationIdOffset;
+    private List<Node> nodes = new LinkedList<Node>();
+    private List<Way> ways = new LinkedList<Way>();
+    private List<Relation> relations = new LinkedList<Relation>();
     private int relationCount;
     private int wayCount;
     private int nodeCount;
     
-    public OSMFile() {
-        nodeIdOffset = IDGenerator.currentNodeID();
-        wayIdOffset = IDGenerator.currentWayID();
-        relationIdOffset = IDGenerator.currentRelationID();
-    }
-
     public void addNode(Node n) {
         if (n.getID() == 0) {
             n.setID(IDGenerator.nextNodeID());
         }
 
         nodeCount++;
-        addPrimitive(nodes, n, nodeIdOffset);
+        addPrimitive(nodes, n);
     }
 
-    private <M extends Primitive> void addPrimitive(M[] list, M n, int offset) {
-        int index = (Math.abs(n.getID())) + offset;
-        try {
-            if (list[index] == null) {
-                list[index] = n;
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw e;
-        }
+    private <M extends Primitive> void addPrimitive(List<M> list, M n) {
+        list.add(n);
     }
 
     public void addWay(Way w) {
@@ -64,7 +50,7 @@ public class OSMFile {
         }
 
         wayCount++;
-        addPrimitive(ways, w, wayIdOffset);
+        addPrimitive(ways, w);
     }
 
     public void addRelation(Relation r) {
@@ -89,44 +75,19 @@ public class OSMFile {
         }
 
         relationCount++;
-        addPrimitive(relations, r, relationIdOffset);
-    }
-    
-    class PrimitiveIterator<P extends Primitive> implements Iterator<P> {
-        private int i = 0;
-        private P[] prims;
-
-        public PrimitiveIterator(P[] primitives) {
-            prims = primitives;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return (i < prims.length) && (prims[i] != null);
-        }
-
-        @Override
-        public P next() {
-            return prims[i++];
-        }
-
-        @Override
-        public void remove() {
-            return;
-        }
-        
+        addPrimitive(relations, r);
     }
 
     public Iterator<Node> getNodeIterator() {
-        return new PrimitiveIterator<Node>(nodes);
+        return nodes.iterator();
     }
 
     public Iterator<Way> getWayIterator() {
-        return new PrimitiveIterator<Way>(ways);
+        return ways.iterator();
     }
 
     public Iterator<Relation> getRelationIterator() {
-        return new PrimitiveIterator<Relation>(relations);
+        return relations.iterator();
     }
 
     public int getNodeCount() {
