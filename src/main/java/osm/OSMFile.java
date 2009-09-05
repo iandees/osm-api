@@ -77,6 +77,10 @@ public class OSMFile {
         relationCount++;
         addPrimitive(relations, r);
     }
+    
+    public int getChangeCount() {
+        return nodeCount + wayCount + relationCount;
+    }
 
     public Iterator<Node> getNodeIterator() {
         return nodes.iterator();
