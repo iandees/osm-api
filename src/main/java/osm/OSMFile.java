@@ -1,5 +1,8 @@
 package osm;
 
+import org.xml.sax.SAXException;
+
+import osm.parser.OSMSaxParser;
 import osm.primitive.Primitive;
 import osm.primitive.PrimitiveTypeEnum;
 import osm.primitive.node.Node;
@@ -8,6 +11,12 @@ import osm.primitive.relation.Relation;
 import osm.primitive.way.Way;
 import util.IDGenerator;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +48,7 @@ public class OSMFile {
     }
 
     public void addWay(Way w) {
-        if (w.getID() > -1) {
+        if (w.getID() < 0) {
             w.setID(IDGenerator.nextWayID());
         }
 
@@ -96,6 +105,84 @@ public class OSMFile {
 
     public int getNodeCount() {
         return nodeCount;
+    }
+
+    /**
+     * @param file
+     * @return
+     */
+    public static OSMFile fromFile(File file) {
+        OSMSaxParser osmHandler = new OSMSaxParser();
+        
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+            saxParser.parse(file, osmHandler);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return osmHandler.getOSMFile();
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public Node findNodeById(int id) {
+        // TODO Need a better data structure for id => primitive
+        for (Node node : nodes) {
+            if(node.getID() == id) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param refId
+     * @return
+     */
+    public Primitive findRelationById(int refId) {
+        // TODO Need a better data structure for id => primitive
+        for (Relation relation : relations) {
+            if(relation.getID() == refId) {
+                return relation;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param refId
+     * @return
+     */
+    public Primitive findWayById(int refId) {
+        // TODO Need a better data structure for id => primitive
+        for (Way way : ways) {
+            if(way.getID() == refId) {
+                return way;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public int getWayCount() {
+        return wayCount;
+    }
+
+    /**
+     * @return
+     */
+    public int getRelationCount() {
+        return relationCount;
     }
 
 }

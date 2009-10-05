@@ -14,7 +14,7 @@ public abstract class Primitive {
     private int id;
     private List<Tag> tagsList = new ArrayList<Tag>();
     
-    public void setID(Integer id) {
+    public void setID(int id) {
         this.id = id;
     }
     
