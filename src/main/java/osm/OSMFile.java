@@ -1,5 +1,15 @@
 package osm;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.SAXException;
 
 import osm.parser.OSMSaxParser;
@@ -10,16 +20,6 @@ import osm.primitive.relation.Member;
 import osm.primitive.relation.Relation;
 import osm.primitive.way.Way;
 import util.IDGenerator;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Ian Dees
@@ -183,6 +183,41 @@ public class OSMFile {
      */
     public int getRelationCount() {
         return relationCount;
+    }
+
+    /**
+     * Read in a list of OSM files and return an aggregate of all of them together.
+     * @param files The list of files to read.
+     * @return The combined data from the list of OSM files.
+     */
+    public static OSMFile fromFiles(List<File> files) {
+        if(files == null) {
+            throw new IllegalArgumentException("Files cannot be null.");
+        }
+        
+        OSMFile aggregate = new OSMFile();
+        for (File file : files) {
+            if(file.exists()) {
+                OSMFile f = OSMFile.fromFile(file);
+                aggregate.appendTo(f);
+            }
+        }
+        return aggregate;
+    }
+
+    public void appendTo(OSMFile f) {
+        if(f == null) {
+            throw new IllegalArgumentException("File cannot be null.");
+        }
+        
+        this.nodes.addAll(f.nodes);
+        this.nodeCount += f.nodeCount;
+        
+        this.ways.addAll(f.ways);
+        this.wayCount += f.wayCount;
+        
+        this.relations.addAll(f.relations);
+        this.relationCount += f.relationCount;
     }
 
 }
