@@ -12,7 +12,26 @@ import java.util.List;
 public abstract class Primitive {
 
     private int id;
+    private User user;
+    private boolean visible;
+    private Integer version = null;
     private List<Tag> tagsList = new ArrayList<Tag>();
+    
+    public void setVersion(int ver) {
+        this.version = ver;
+    }
+    
+    public Integer getVersion() {
+        return this.version;
+    }
+    
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+    
+    public boolean isVisible() {
+        return this.visible;
+    }
     
     public void setID(int id) {
         this.id = id;
@@ -61,5 +80,13 @@ public abstract class Primitive {
      * @return
      */
     public abstract PrimitiveTypeEnum getType();
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public User getUser() {
+        return user;
+    }
 
 }

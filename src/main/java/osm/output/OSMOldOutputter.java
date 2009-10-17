@@ -27,7 +27,7 @@ public class OSMOldOutputter implements OSMOutputter {
     }
 
     public void write(OSMFile osmOut) {
-        File actualOutFile = new File(rootDir, filePre + count + ".osm");
+        File actualOutFile = new File(rootDir, filePre + count + ".xml");
         saveOsmOut(osmOut, actualOutFile);
         count++;
     }
@@ -66,16 +66,16 @@ public class OSMOldOutputter implements OSMOutputter {
 
     private static void outputRelations(Writer out, Iterator<Relation> relationIter) throws IOException {
         while (relationIter.hasNext()) {
-            Relation way = (Relation) relationIter.next();
+            Relation relation = relationIter.next();
     
-            out.write("  <relation id=\"");
-            out.write(Integer.toString(way.getID()));
+            out.write("  <relation ");
+            writePrimitveAttrs(out, relation);
             out.write("\">\n");
     
-            Iterator<Member> memberIter = way.getMemberIterator();
+            Iterator<Member> memberIter = relation.getMemberIterator();
             outputMembers(out, memberIter);
     
-            Iterator<Tag> tagIter = way.getTagIterator();
+            Iterator<Tag> tagIter = relation.getTagIterator();
             outputTags(out, tagIter);
     
             out.write("  </relation>\n");
@@ -84,7 +84,7 @@ public class OSMOldOutputter implements OSMOutputter {
 
     private static void outputMembers(Writer out, Iterator<Member> memberIter) throws IOException {
         while (memberIter.hasNext()) {
-            Member member = (Member) memberIter.next();
+            Member member = memberIter.next();
     
             out.write("    <member type=\"");
             out.write(member.getMember().getType().toString());
@@ -98,11 +98,11 @@ public class OSMOldOutputter implements OSMOutputter {
 
     private static void outputWays(Writer out, Iterator<Way> wayIter) throws IOException {
         while (wayIter.hasNext()) {
-            Way way = (Way) wayIter.next();
+            Way way = wayIter.next();
     
-            out.write("  <way id=\"");
-            out.write(Integer.toString(way.getID()));
-            out.write("\">\n");
+            out.write("  <way ");
+            writePrimitveAttrs(out, way);
+            out.write(">\n");
     
             Iterator<Node> nodeIter = way.getNodeIterator();
             outputWayRefs(out, nodeIter);
@@ -116,7 +116,7 @@ public class OSMOldOutputter implements OSMOutputter {
 
     private static void outputWayRefs(Writer out, Iterator<Node> nodeIter) throws IOException {
         while (nodeIter.hasNext()) {
-            Primitive node = (Primitive) nodeIter.next();
+            Node node = nodeIter.next();
     
             out.write("    <nd ref=\"");
             out.write(Integer.toString(node.getID()));
@@ -126,15 +126,12 @@ public class OSMOldOutputter implements OSMOutputter {
 
     private static void outputNodes(Writer out, Iterator<Node> nodeIter) throws IOException {
         while (nodeIter.hasNext()) {
-            Node node = (Node) nodeIter.next();
+            Node node = nodeIter.next();
     
-            out.write("  <node id=\"");
-            out.write(Integer.toString(node.getID()));
-            out.write("\" lat=\"");
-            out.write(Double.toString(node.getLat()));
-            out.write("\" lon=\"");
-            out.write(Double.toString(node.getLon()));
-            out.write("\"");
+            out.write("  <node ");
+            writePrimitveAttrs(out, node);
+            writeAttr(out, "lat", Double.toString(node.getLat()));
+            writeAttr(out, "lon", Double.toString(node.getLon()));
     
             if (node.hasTags()) {
                 out.write(">\n");
@@ -150,9 +147,37 @@ public class OSMOldOutputter implements OSMOutputter {
         }
     }
 
+    private static void writePrimitveAttrs(Writer out, Primitive prim) throws IOException {
+        writeAttr(out, "id", Integer.toString(prim.getID()));
+
+        if (prim.getVersion() != null) {
+            writeAttr(out, "version", prim.getVersion().toString());
+        }
+
+        if (prim.getUser() != null) {
+            writeAttr(out, "user", prim.getUser().getName());
+            writeAttr(out, "uid", Integer.toString(prim.getUser().getId()));
+        }
+        
+        if (prim.isVisible()) {
+            writeAttr(out, "visible", "true");
+        } else {
+            writeAttr(out, "visible", "false");
+        }
+    }
+    
+    private static void writeAttr(Writer out, String key, String value) throws IOException {
+        if (out != null && key != null && value != null) {
+            out.write(key);
+            out.write("=\"");
+            out.write(value);
+            out.write("\" ");
+        }
+    }
+
     private static void outputTags(Writer out, Iterator<Tag> tagIter) throws IOException {
         while (tagIter.hasNext()) {
-            Tag tag = (Tag) tagIter.next();
+            Tag tag = tagIter.next();
     
             out.write("    <tag k=\"");
             out.write(tag.getKey());

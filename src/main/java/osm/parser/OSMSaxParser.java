@@ -7,6 +7,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import osm.OSMFile;
 import osm.primitive.Primitive;
 import osm.primitive.Tag;
+import osm.primitive.User;
 import osm.primitive.node.Node;
 import osm.primitive.node.NodeByRef;
 import osm.primitive.relation.Member;
@@ -87,9 +88,13 @@ public class OSMSaxParser extends DefaultHandler {
     private void handlePrimitiveAttributes(Attributes attributes) {
         int id = Integer.parseInt(attributes.getValue("id"));
 //        String date = attributes.getValue("timestamp");
-//        int uid = Integer.parseInt(attributes.getValue("uid"));
-//        String user = attributes.getValue("user");
+        int ver = Integer.parseInt(attributes.getValue("version"));
+        int uid = Integer.parseInt(attributes.getValue("uid"));
+        String username = attributes.getValue("user");
+        User user = new User(uid, username);
+        currentPrimitive.setUser(user);
         currentPrimitive.setID(id);
+        currentPrimitive.setVersion(ver);
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {

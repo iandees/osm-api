@@ -37,4 +37,8 @@ public class Way extends Primitive {
 		return nodeList.size();
 	}
 
+    public List<Node> getNodes() {
+        return nodeList;
+    }
+
 }
