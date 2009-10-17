@@ -9,24 +9,26 @@ import osm.primitive.PrimitiveTypeEnum;
  */
 public class Node extends Primitive {
 
-    private double lat;
-    private double lon;
+    private LatLon point;
 
     public Node(double lat, double lng) {
-        this.lat = lat;
-        this.lon = lng;
+        this.point = new LatLon(lat, lng);
     }
 
     public double getLat() {
-        return lat;
+        return point.getLat();
     }
 
     public double getLon() {
-        return lon;
+        return point.getLon();
     }
 
     public PrimitiveTypeEnum getType() {
         return PrimitiveTypeEnum.node;
+    }
+
+    public LatLon getPoint() {
+        return point;
     }
     
 }
