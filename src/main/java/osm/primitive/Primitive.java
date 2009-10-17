@@ -48,6 +48,15 @@ public abstract class Primitive {
         return id;
     }
 
+    public String getTagValue(String key) {
+        for (Tag tag : tagsList) {
+            if (key.equals(tag.getKey())) {
+                return tag.getValue();
+            }
+        }
+        return null;
+    }
+
     /**
      * @return
      */

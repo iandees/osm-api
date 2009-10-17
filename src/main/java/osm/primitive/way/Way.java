@@ -1,7 +1,7 @@
 package osm.primitive.way;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import osm.primitive.Primitive;
@@ -15,7 +15,7 @@ import util.IDGenerator;
  */
 public class Way extends Primitive {
 
-    private List<Node> nodeList = new ArrayList<Node>(1000);
+    private List<Node> nodeList = new LinkedList<Node>();
     
     public void addNode(Node node) {
         if (node.getID() == 0) {
