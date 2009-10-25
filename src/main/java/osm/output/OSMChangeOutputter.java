@@ -15,7 +15,7 @@ import java.io.Writer;
 import java.util.Iterator;
 
 
-public class OSMChangeOutputter implements OSMOutputter {
+public class OSMChangeOutputter extends AbstractOutputter {
 
     private File rootDir;
     private String filePre;
@@ -68,7 +68,7 @@ public class OSMChangeOutputter implements OSMOutputter {
 
     private static void outputRelations(Writer out, Iterator<Relation> relationIter) throws IOException {
         while (relationIter.hasNext()) {
-            Relation way = (Relation) relationIter.next();
+            Relation way = relationIter.next();
     
             out.write("    <relation id=\"");
             out.write(Integer.toString(way.getID()));
@@ -86,7 +86,7 @@ public class OSMChangeOutputter implements OSMOutputter {
 
     private static void outputMembers(Writer out, Iterator<Member> memberIter) throws IOException {
         while (memberIter.hasNext()) {
-            Member member = (Member) memberIter.next();
+            Member member = memberIter.next();
     
             out.write("      <member type=\"");
             out.write(member.getMember().getType().toString());
@@ -118,7 +118,7 @@ public class OSMChangeOutputter implements OSMOutputter {
 
     private static void outputWayRefs(Writer out, Iterator<Node> nodeIter) throws IOException {
         while (nodeIter.hasNext()) {
-            Primitive node = (Primitive) nodeIter.next();
+            Primitive node = nodeIter.next();
     
             out.write("      <nd ref=\"");
             out.write(Integer.toString(node.getID()));
@@ -128,7 +128,7 @@ public class OSMChangeOutputter implements OSMOutputter {
 
     private static void outputNodes(Writer out, Iterator<Node> nodeIter) throws IOException {
         while (nodeIter.hasNext()) {
-            Node node = (Node) nodeIter.next();
+            Node node = nodeIter.next();
     
             out.write("    <node id=\"");
             out.write(Integer.toString(node.getID()));
@@ -154,7 +154,7 @@ public class OSMChangeOutputter implements OSMOutputter {
 
     private static void outputTags(Writer out, Iterator<Tag> tagIter) throws IOException {
         while (tagIter.hasNext()) {
-            Tag tag = (Tag) tagIter.next();
+            Tag tag = tagIter.next();
     
             out.write("      <tag k=\"");
             out.write(tag.getKey());

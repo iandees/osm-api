@@ -15,7 +15,7 @@ import java.io.Writer;
 import java.util.Iterator;
 
 
-public class OSMOldOutputter implements OSMOutputter {
+public class OSMOldOutputter extends AbstractOutputter {
 
     private File rootDir;
     private String filePre;
