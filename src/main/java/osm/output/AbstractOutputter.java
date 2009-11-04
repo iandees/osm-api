@@ -7,7 +7,7 @@ import osm.primitive.way.Way;
 
 public abstract class AbstractOutputter implements OSMOutputter {
 
-    private OSMFile storage;
+    private OSMFile storage = new OSMFile();
     private int maxChanges;
     
     public void addNode(Node node) {
@@ -43,7 +43,8 @@ public abstract class AbstractOutputter implements OSMOutputter {
     }
 
     public void finish() {
-        checkAndWrite();
+        write(storage);
+        storage = new OSMFile();
     }
 
     public void setMaxElementsPerFile(int maxPerFile) {
