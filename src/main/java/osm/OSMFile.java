@@ -33,8 +33,12 @@ public class OSMFile {
     private int relationCount;
     private int wayCount;
     private int nodeCount;
-    
+
     public void addNode(Node n) {
+        if (nodes.contains(n)) {
+            return;
+        }
+
         if (n.getID() == 0) {
             n.setID(IDGenerator.nextNodeID());
         }
@@ -48,7 +52,11 @@ public class OSMFile {
     }
 
     public void addWay(Way w) {
-        if (w.getID() < 0) {
+        if (ways.contains(w)) {
+            return;
+        }
+
+        if (w.getID() == 0) {
             w.setID(IDGenerator.nextWayID());
         }
 
@@ -63,13 +71,17 @@ public class OSMFile {
     }
 
     public void addRelation(Relation r) {
-        if (r.getID() > -1) {
+        if (relations.contains(r)) {
+            return;
+        }
+
+        if (r.getID() == 0) {
             r.setID(IDGenerator.nextRelationID());
         }
 
         Iterator<Member> memberIterator = r.getMemberIterator();
         while (memberIterator.hasNext()) {
-            Member member = (Member) memberIterator.next();
+            Member member = memberIterator.next();
 
             Primitive primitive = member.getMember();
             PrimitiveTypeEnum type = primitive.getType();
@@ -86,7 +98,7 @@ public class OSMFile {
         relationCount++;
         addPrimitive(relations, r);
     }
-    
+
     public int getChangeCount() {
         return nodeCount + wayCount + relationCount;
     }
@@ -113,7 +125,7 @@ public class OSMFile {
      */
     public static OSMFile fromFile(File file) {
         OSMSaxParser osmHandler = new OSMSaxParser();
-        
+
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -125,7 +137,7 @@ public class OSMFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return osmHandler.getOSMFile();
     }
 
@@ -136,7 +148,7 @@ public class OSMFile {
     public Node findNodeById(int id) {
         // TODO Need a better data structure for id => primitive
         for (Node node : nodes) {
-            if(node.getID() == id) {
+            if (node.getID() == id) {
                 return node;
             }
         }
@@ -150,7 +162,7 @@ public class OSMFile {
     public Primitive findRelationById(int refId) {
         // TODO Need a better data structure for id => primitive
         for (Relation relation : relations) {
-            if(relation.getID() == refId) {
+            if (relation.getID() == refId) {
                 return relation;
             }
         }
@@ -164,7 +176,7 @@ public class OSMFile {
     public Primitive findWayById(int refId) {
         // TODO Need a better data structure for id => primitive
         for (Way way : ways) {
-            if(way.getID() == refId) {
+            if (way.getID() == refId) {
                 return way;
             }
         }
@@ -186,18 +198,20 @@ public class OSMFile {
     }
 
     /**
-     * Read in a list of OSM files and return an aggregate of all of them together.
+     * Read in a list of OSM files and return an aggregate of all of them
+     * together.
+     * 
      * @param files The list of files to read.
      * @return The combined data from the list of OSM files.
      */
     public static OSMFile fromFiles(List<File> files) {
-        if(files == null) {
+        if (files == null) {
             throw new IllegalArgumentException("Files cannot be null.");
         }
-        
+
         OSMFile aggregate = new OSMFile();
         for (File file : files) {
-            if(file.exists()) {
+            if (file.exists()) {
                 OSMFile f = OSMFile.fromFile(file);
                 aggregate.appendTo(f);
             }
@@ -206,16 +220,16 @@ public class OSMFile {
     }
 
     public void appendTo(OSMFile f) {
-        if(f == null) {
+        if (f == null) {
             throw new IllegalArgumentException("File cannot be null.");
         }
-        
+
         this.nodes.addAll(f.nodes);
         this.nodeCount += f.nodeCount;
-        
+
         this.ways.addAll(f.ways);
         this.wayCount += f.wayCount;
-        
+
         this.relations.addAll(f.relations);
         this.relationCount += f.relationCount;
     }
