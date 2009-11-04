@@ -20,10 +20,12 @@ public class OSMChangeOutputter extends AbstractOutputter {
     private File rootDir;
     private String filePre;
     private int count = 0;
+    private String generator;
 
-    public OSMChangeOutputter(File rootDirFile, String filePrefix) {
+    public OSMChangeOutputter(File rootDirFile, String filePrefix, String generatorString) {
         rootDir = rootDirFile;
         filePre = filePrefix;
+        generator = generatorString;
     }
 
     public void write(OSMFile osmOut) {
@@ -40,8 +42,8 @@ public class OSMChangeOutputter extends AbstractOutputter {
             FileWriter bos = new FileWriter(actualOutput);
     
             bos.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            bos.write("<osmChange version=\"0.6\" generator=\"shp-to-osm 0.5\">\n");
-            bos.write("  <create version=\"0.6\" generator=\"shp-to-osm 0.5\">\n");
+            bos.write("<osmChange version=\"0.6\" generator=\""+generator+"\">\n");
+            bos.write("  <create version=\"0.6\" generator=\""+generator+"\">\n");
     
             Iterator<Node> nodeIter = osmOut.getNodeIterator();
             outputNodes(bos, nodeIter);
