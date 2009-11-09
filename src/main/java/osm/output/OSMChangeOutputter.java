@@ -13,10 +13,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class OSMChangeOutputter extends AbstractOutputter {
 
+    private static Logger log = Logger.getLogger(OSMChangeOutputter.class.getName());
+    
     private File rootDir;
     private String filePre;
     private int count = 0;
@@ -35,7 +39,7 @@ public class OSMChangeOutputter extends AbstractOutputter {
     }
 
     private void saveOsmOut(OSMFile osmOut, File actualOutput) {
-        System.err.println("Writing out to file " + actualOutput.getAbsolutePath() + ".");
+        log.log(Level.INFO, "Writing out to file " + actualOutput.getAbsolutePath() + ".");
     
         // Now write out the file
         try {
@@ -64,8 +68,8 @@ public class OSMChangeOutputter extends AbstractOutputter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        System.err.println("Done.");
+
+        log.log(Level.INFO, "Done.");
     }
 
     private static void outputRelations(Writer out, Iterator<Relation> relationIter) throws IOException {
