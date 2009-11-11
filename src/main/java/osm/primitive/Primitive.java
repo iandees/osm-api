@@ -13,11 +13,11 @@ public abstract class Primitive {
 
     private int id;
     private User user;
-    private boolean visible;
+    private boolean visible = true;
     private Integer version = null;
     private List<Tag> tagsList = new ArrayList<Tag>();
     
-    public void setVersion(int ver) {
+    public void setVersion(Integer ver) {
         this.version = ver;
     }
     

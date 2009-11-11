@@ -72,7 +72,7 @@ public class OSMOldOutputter extends AbstractOutputter {
     
             out.write("  <relation ");
             writePrimitveAttrs(out, relation);
-            out.write("\">\n");
+            out.write(">\n");
     
             Iterator<Member> memberIter = relation.getMemberIterator();
             outputMembers(out, memberIter);
