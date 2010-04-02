@@ -3,12 +3,12 @@
   <groupId>com.yellowbkpk.geo</groupId>
   <artifactId>osm-api</artifactId>
   <name>OSM API</name>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <description>The classes that allow interactions with the API 0.6.</description>
   
   <scm>
-    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/trunk/osm-api</developerConnection>
-    <url>http://svn.yellowbkpk.com/geo/trunk/osm-api</url>
+    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/tags/osm-api-0.1</developerConnection>
+    <url>http://svn.yellowbkpk.com/geo/tags/osm-api-0.1</url>
   </scm>
   <build>
     <plugins>
