@@ -3,19 +3,23 @@
   <groupId>com.yellowbkpk.geo</groupId>
   <artifactId>osm-api</artifactId>
   <name>OSM API</name>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <description>The classes that allow interactions with the API 0.6.</description>
   
-    <build>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-compiler-plugin</artifactId>
-	            <configuration>
-	                <source>1.5</source>
-	                <target>1.5</target>
-	            </configuration>
-	        </plugin>
-	    </plugins>
+  <scm>
+    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/trunk/osm-api</developerConnection>
+    <url>http://svn.yellowbkpk.com/geo/trunk/osm-api</url>
+  </scm>
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.5</source>
+                <target>1.5</target>
+            </configuration>
+        </plugin>
+    </plugins>
     </build>
 </project>
