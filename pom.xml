@@ -7,8 +7,7 @@
   <description>The classes that allow interactions with the API 0.6.</description>
   
   <scm>
-    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/tags/osm-api-0.1</developerConnection>
-    <url>http://svn.yellowbkpk.com/geo/tags/osm-api-0.1</url>
+    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/trunk/osm-api</developerConnection>
   </scm>
   <build>
     <plugins>
