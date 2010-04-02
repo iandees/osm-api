@@ -30,20 +30,12 @@ public class OSMFile {
     private List<Node> nodes = new LinkedList<Node>();
     private List<Way> ways = new LinkedList<Way>();
     private List<Relation> relations = new LinkedList<Relation>();
-    private int relationCount;
-    private int wayCount;
-    private int nodeCount;
 
     public void addNode(Node n) {
-        if (nodes.contains(n)) {
-            return;
-        }
-
         if (n.getID() == 0) {
             n.setID(IDGenerator.nextNodeID());
         }
 
-        nodeCount++;
         addPrimitive(nodes, n);
     }
 
@@ -52,37 +44,23 @@ public class OSMFile {
     }
 
     public void addWay(Way w) {
-        if (ways.contains(w)) {
-            return;
-        }
-
         if (w.getID() == 0) {
             w.setID(IDGenerator.nextWayID());
         }
 
-        Iterator<Node> nodeIterator = w.getNodeIterator();
-        while (nodeIterator.hasNext()) {
-            Node node = (Node) nodeIterator.next();
-            addNode(node);
+        for (Node n : w.getNodes()) {
+            addNode(n);
         }
 
-        wayCount++;
         addPrimitive(ways, w);
     }
 
     public void addRelation(Relation r) {
-        if (relations.contains(r)) {
-            return;
-        }
-
         if (r.getID() == 0) {
             r.setID(IDGenerator.nextRelationID());
         }
 
-        Iterator<Member> memberIterator = r.getMemberIterator();
-        while (memberIterator.hasNext()) {
-            Member member = memberIterator.next();
-
+        for (Member member : r.getMembers()) {
             Primitive primitive = member.getMember();
             PrimitiveTypeEnum type = primitive.getType();
 
@@ -95,12 +73,11 @@ public class OSMFile {
             }
         }
 
-        relationCount++;
         addPrimitive(relations, r);
     }
 
     public int getChangeCount() {
-        return nodeCount + wayCount + relationCount;
+        return getNodeCount() + getWayCount() + getRelationCount();
     }
 
     public Iterator<Node> getNodeIterator() {
@@ -116,7 +93,7 @@ public class OSMFile {
     }
 
     public int getNodeCount() {
-        return nodeCount;
+        return nodes.size();
     }
 
     /**
@@ -187,14 +164,14 @@ public class OSMFile {
      * @return
      */
     public int getWayCount() {
-        return wayCount;
+        return ways.size();
     }
 
     /**
      * @return
      */
     public int getRelationCount() {
-        return relationCount;
+        return relations.size();
     }
 
     /**
@@ -225,13 +202,8 @@ public class OSMFile {
         }
 
         this.nodes.addAll(f.nodes);
-        this.nodeCount += f.nodeCount;
-
         this.ways.addAll(f.ways);
-        this.wayCount += f.wayCount;
-
         this.relations.addAll(f.relations);
-        this.relationCount += f.relationCount;
     }
 
 }
