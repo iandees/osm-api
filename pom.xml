@@ -3,7 +3,7 @@
   <groupId>com.yellowbkpk.geo</groupId>
   <artifactId>osm-api</artifactId>
   <name>OSM API</name>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
   <description>The classes that allow interactions with the API 0.6.</description>
   
   <scm>
