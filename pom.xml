@@ -3,22 +3,36 @@
   <groupId>com.yellowbkpk.geo</groupId>
   <artifactId>osm-api</artifactId>
   <name>OSM API</name>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.3</version>
   <description>The classes that allow interactions with the API 0.6.</description>
   
   <scm>
-    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/trunk/osm-api</developerConnection>
+    <developerConnection>scm:svn:http://svn.yellowbkpk.com/geo/tags/osm-api-0.3</developerConnection>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>ssh.repo</id>
+      <name>SVN Repository</name>
+      <url>scp://svn.yellowbkpk.com/home/yellowb1/svn.yellowbkpk.com/dist/release/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ssh.repo</id>
+      <name>SVN Snapshot Repository</name>
+      <url>scp://svn.yellowbkpk.com/home/yellowb1/svn.yellowbkpk.com/dist/snapshot/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <build>
     <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-                <source>1.5</source>
-                <target>1.5</target>
-            </configuration>
-        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
     </plugins>
-    </build>
+  </build>
 </project>
