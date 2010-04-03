@@ -3,7 +3,7 @@ package osm;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,9 +27,9 @@ import util.IDGenerator;
  */
 public class OSMFile {
 
-    private List<Node> nodes = new LinkedList<Node>();
-    private List<Way> ways = new LinkedList<Way>();
-    private List<Relation> relations = new LinkedList<Relation>();
+    private LinkedHashSet<Node> nodes = new LinkedHashSet<Node>();
+    private LinkedHashSet<Way> ways = new LinkedHashSet<Way>();
+    private LinkedHashSet<Relation> relations = new LinkedHashSet<Relation>();
 
     public void addNode(Node n) {
         if (n.getID() == 0) {
@@ -39,7 +39,7 @@ public class OSMFile {
         addPrimitive(nodes, n);
     }
 
-    private <M extends Primitive> void addPrimitive(List<M> list, M n) {
+    private <M extends Primitive> void addPrimitive(LinkedHashSet<M> list, M n) {
         list.add(n);
     }
 
